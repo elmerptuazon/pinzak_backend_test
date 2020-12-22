@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -12,11 +13,11 @@ class AuthController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|max:55',
+                'name' => 'required',
                 'email' => 'email|required|unique:users',
                 'password' => 'required|confirmed'
             ]);
-            
+
             $encryptPwd = bcrypt($request->password);
     
             $user = User::create([

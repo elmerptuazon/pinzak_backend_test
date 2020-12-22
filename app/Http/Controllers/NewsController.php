@@ -63,7 +63,13 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        try{
+            $get_news = News::where('id', $news->id)->first();
+
+            return response(['status'=>'success', 'data'=>new NewsResource($get_news)]);
+        }catch(\Exception $err) {
+            return response(['status'=>'failed', 'message'=>$err]);
+        }
     }
 
     /**
@@ -84,9 +90,18 @@ class NewsController extends Controller
      * @param  \App\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(ValidateNewsRequest $request, News $news)
     {
-        //
+        try{
+            $data = $request->all();
+
+            $update_news = News::where('id', $news->id)->update($data);
+            $get_updated_news = News::where('id', $news->id)->first();
+
+            return response(['status'=>'success', 'data'=>new NewsResource($get_updated_news)]);
+        }catch(\Exception $err) {
+            return response(['status'=>'failed', 'message'=>$err]);
+        }
     }
 
     /**
@@ -97,6 +112,12 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        try{
+            News::where('id', $news->id)->delete();
+
+            return response(['status'=>'success', 'data'=>'News deleted.']);
+        }catch(\Exception $err) {
+            return response(['status'=>'failed', 'message'=>$err]);
+        }
     }
 }
