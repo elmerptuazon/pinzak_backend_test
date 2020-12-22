@@ -17,9 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resources([
-    'news' => NewsController::class,
-]);
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::prefix('user')->middleware(['auth:api'])->group(function () {
+    Route::resources([
+        'news' => NewsController::class,
+    ]);
+});
