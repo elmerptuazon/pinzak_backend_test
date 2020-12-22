@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\News;
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\NewsCollection;
 
 class NewsController extends Controller
 {
@@ -14,9 +17,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::paginate(5);
+        $user = News::paginate(3);
 
-        return $news;
+        return new NewsCollection($user);
     }
 
     /**
