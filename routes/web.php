@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-
-Auth::routes();
-
 Route::prefix('user')->middleware(['auth:api'])->group(function () {
     Route::resources([
         'news' => NewsController::class,

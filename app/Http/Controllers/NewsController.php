@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\News;
-use App\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\User as UserResource;
+use App\Http\Resources\News as NewsResource;
 use App\Http\Resources\NewsCollection;
+use App\Http\Requests\ValidateNewsRequest;
 
 class NewsController extends Controller
 {
@@ -17,9 +17,13 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $user = News::paginate(3);
+        try{
+            $news = News::paginate(10);
 
-        return new NewsCollection($user);
+            return response(['status'=>'success', 'data'=>new NewsCollection($news)]);
+            }catch(\Exception $err) {
+                return response(['status'=>'failed', 'message'=>$err]);
+            }
     }
 
     /**
@@ -38,9 +42,17 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateNewsRequest $request)
     {
-        //
+        try{
+            $data = $request->all();
+
+            $news = News::create($data);
+
+            return response(['status'=>'success', 'data'=>new NewsResource($news)]);
+        }catch(\Exception $err) {
+            return response(['status'=>'failed', 'message'=>$err]);
+        }
     }
 
     /**
