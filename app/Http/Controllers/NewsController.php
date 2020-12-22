@@ -14,7 +14,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        $news = News::paginate(5);
+
+        return $news;
     }
 
     /**
