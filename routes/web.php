@@ -20,3 +20,6 @@ Route::get('/', function () {
 Route::resources([
     'news' => NewsController::class,
 ]);
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
